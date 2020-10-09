@@ -53,3 +53,5 @@ If that doesn't work: `sudo vim $(psql -c "show hba_file;" | grep pg_hba.conf)`
   c) Preview Running Application (might have to clear your cache by doing a hard refresh)    
 
 SELECT usename AS role_name FROM pg_catalog.pg_user;
+
+delete from usps;

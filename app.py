@@ -35,7 +35,8 @@ db.app = app
 db.create_all()
 db.session.commit()
 
-def emit_all_addresses(channel):
+users=[]
+def emit_all_addresses(channel, dbuser):
     all_addresses=[db_address.address for db_address in db.session.query(models.Usps).all()]
     
     socketio.emit(channel, {
@@ -49,7 +50,7 @@ def on_connect():
         'test': 'Connected'
     })
     
-    emit_all_addresses(ADDRESSES_RECEIVED_CHANNEL)
+    emit_all_addresses(ADDRESSES_RECEIVED_CHANNEL, dbuser)
     
 
 @socketio.on('disconnect')
@@ -61,14 +62,21 @@ def on_new_address(data):
     print("Got an event for new address input with data:", data)
     
     db.session.add(models.Usps(data["address"]));
-    print(dbuser);
+    print(data["address"])
     db.session.commit();
     
-    emit_all_addresses(ADDRESSES_RECEIVED_CHANNEL)
+    if(data["address"][0:2] == '!!'):
+        dbuser="wall-Ebot"
+        db.session.add(models.Usps("bot has arrived."))
+        db.session.commit();
+    else:
+        dbuser= os.environ['SQL_USER']
+    
+    emit_all_addresses(ADDRESSES_RECEIVED_CHANNEL, dbuser)
 
 @app.route('/')
 def index():
-    emit_all_addresses(ADDRESSES_RECEIVED_CHANNEL)
+    emit_all_addresses(ADDRESSES_RECEIVED_CHANNEL, dbuser)
 
     return flask.render_template("index.html")
 

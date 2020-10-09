@@ -31,11 +31,11 @@ export function Content() {
             <h1>Chat Room!</h1>
                 <ul>
                     {
-                    addresses.map((address, index) =>
-                       <li>{user}: {address}</li>)
+                    addresses.map((address, index) => <li>{user}: {address}</li>)
                     }
                 </ul>
             <Button />
         </div>
+        
     );
 }
