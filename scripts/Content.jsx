@@ -8,7 +8,7 @@ import { Socket } from './Socket';
 
 export function Content() {
     const [addresses, setAddresses] = React.useState([]);
-    const [user, setUser] = React.useState([]);
+    const [users, setUser] = React.useState([]);
     
     function getNewAddresses() {
         
@@ -19,7 +19,6 @@ export function Content() {
                 console.log("Received addresses from server: " + data['allAddresses']);
                 setAddresses(data['allAddresses']);
                 setUser(data['User']);
-                console.log(user);
             })
         });
     }
@@ -31,7 +30,7 @@ export function Content() {
             <h1>Chat Room!</h1>
                 <ul>
                     {
-                    addresses.map((address, index) => <li>{user}: {address}</li>)
+                    addresses.map((address, index) => <li>{address}</li>)
                     }
                 </ul>
             <Button />
