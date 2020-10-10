@@ -28,13 +28,14 @@ export function Content() {
 
     return (
         <div>
-            <h1>WALL-E Chat Room!</h1>
+            <h1 style={{fontFamily:"verdana", backgroundColor: "lightblue", textAlign: "center"}}>WALL-E Chat Room!</h1>
                 <ul>
                     {
                     addresses.map((address, index) => <li>{address}</li>)
                     }
                 </ul>
             <Button />
+            <img class="center" src="https://cdn.dribbble.com/users/37530/screenshots/2937858/drib_blink_bot.gif"/>
         </div>
         
     );

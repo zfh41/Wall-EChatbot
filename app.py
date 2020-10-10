@@ -9,6 +9,7 @@ import models
 import psycopg2
 import requests
 import json
+from datetime import datetime
 
 ADDRESSES_RECEIVED_CHANNEL = 'addresses received'
 
@@ -78,7 +79,7 @@ def on_new_address(data):
         if(data["address"][2:] == 'about'):
             message=dbuser+": "+"Hi I am Wall-E, nice to meet you. I am a robot that likes to clean up the Earth!"
         elif(data["address"][2:] == "help"):
-            message=dbuser+": "+" Commands that can be used: !!about, !!funtranslate <message>, !!pun"
+            message=dbuser+": "+" Commands that can be used: !!about, !!funtranslate <message>, !!pun, !!time"
         elif(data["address"][2:14] == "funtranslate"):
             url='https://api.funtranslations.com/translate/yoda.json?text={}'.format(data["address"][15:])
             response = requests.get(url)
@@ -91,6 +92,8 @@ def on_new_address(data):
            json_body = response.json()
            message=dbuser+": "+(json.dumps(json_body["joke"])).strip('\\\n"')
            print(json.dumps(json_body["joke"]))
+        elif(data["address"][2:] == "time"):
+            message=dbuser+": The time is "+str(datetime.now().time())
         else:
             message=dbuser+": "+"Sorry I do not recognize this command..."
 
