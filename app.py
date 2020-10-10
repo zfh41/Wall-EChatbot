@@ -90,10 +90,10 @@ def on_new_address(data):
            url='https://sv443.net/jokeapi/v2/joke/Pun?type=single'
            response = requests.get(url)
            json_body = response.json()
-           message=dbuser+": "+(json.dumps(json_body["joke"])).strip('\\\n"')
+           message=dbuser+": "+(json.dumps(json_body["joke"])).strip('\"\\n')
            print(json.dumps(json_body["joke"]))
         elif(data["address"][2:] == "time"):
-            message=dbuser+": The time is "+str(datetime.now().time())
+            message=dbuser+": The time is "+str(datetime.now().time().strftime("%I:%M %p"))
         else:
             message=dbuser+": "+"Sorry I do not recognize this command..."
 
