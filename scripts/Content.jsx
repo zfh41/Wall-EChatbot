@@ -28,7 +28,7 @@ export function Content() {
 
     return (
         <div>
-            <h1>Chat Room!</h1>
+            <h1>WALL-E Chat Room!</h1>
                 <ul>
                     {
                     addresses.map((address, index) => <li>{address}</li>)
