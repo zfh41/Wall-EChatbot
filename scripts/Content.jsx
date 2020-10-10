@@ -19,6 +19,7 @@ export function Content() {
                 console.log("Received addresses from server: " + data['allAddresses']);
                 setAddresses(data['allAddresses']);
                 setUser(data['User']);
+                
             })
         });
     }

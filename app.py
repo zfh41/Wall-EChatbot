@@ -7,6 +7,8 @@ import flask_sqlalchemy
 import flask_socketio
 import models 
 import psycopg2
+import requests
+import json
 
 ADDRESSES_RECEIVED_CHANNEL = 'addresses received'
 
@@ -18,9 +20,15 @@ socketio.init_app(app, cors_allowed_origins="*")
 dotenv_path = join(dirname(__file__), 'sql.env')
 load_dotenv(dotenv_path)
 
-sql_user = os.environ['SQL_USER']
-sql_pwd = os.environ['SQL_PASSWORD']
-dbuser = os.environ['SQL_USER']
+SQL_USER='SQL_USER'
+SQL_PASSWORD='SQL_PASSWORD'
+SQL_USER='SQL_USER'
+RAPID_API_KEY='X-RAPID_API_KEY'
+
+sql_user = os.environ[SQL_USER]
+sql_pwd = os.environ[SQL_PASSWORD]
+dbuser = os.environ[SQL_USER]
+rapid_api_key=os.environ[RAPID_API_KEY]
 
 
 database_uri = 'postgresql://{}:{}@localhost/postgres'.format(
@@ -69,7 +77,18 @@ def on_new_address(data):
     
     if(data["address"][0:2] == '!!'):
         dbuser="wall-Ebot"
-        message=dbuser+": bot has arrived"
+        if(data["address"][2:] == 'about'):
+            message=dbuser+": "+"Hi I am Wall-E, nice to meet you. I am a robot that likes to clean up the Earth!"
+        elif(data["address"][2:] == "help"):
+            message=dbuser+": "+" Commands that can be used: !!about, !!funtranslate <message>"
+        elif(data["address"][2:14] == "funtranslate"):
+            url='https://api.funtranslations.com/translate/yoda.json?text={}'.format(data["address"][15:])
+            response = requests.get(url)
+            json_body = response.json()
+            message=dbuser+": "+(json.dumps(json_body["contents"]["translated"])).strip('\"')
+            print(json.dumps(json_body))
+        else:
+            message=dbuser
         db.session.add(models.Usps(message));
         db.session.commit();
     
