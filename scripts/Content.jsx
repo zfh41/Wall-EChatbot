@@ -9,6 +9,7 @@ import { Socket } from './Socket';
 export function Content() {
     const [addresses, setAddresses] = React.useState([]);
     const [users, setUser] = React.useState([]);
+    var clients;
     
     function getNewAddresses() {
         
@@ -18,7 +19,8 @@ export function Content() {
                 
                 console.log("Received addresses from server: " + data['allAddresses']);
                 setAddresses(data['allAddresses']);
-                setUser(data['User']);
+                setUser("1");
+                
                 
             })
         });
@@ -28,10 +30,10 @@ export function Content() {
 
     return (
         <div>
-            <h1 style={{fontFamily:"verdana", backgroundColor: "lightblue", textAlign: "center"}}>WALL-E Chat Room!</h1>
+            <h1 style={{fontFamily:"verdana", backgroundColor: "lightblue", textAlign: "center"}}>WALL-E Chat Room! (1 member online)</h1>
                 <ul>
                     {
-                    addresses.map((address, index) => <li>{address}</li>)
+                    addresses.map((address, index) => <li style= {{fontWeight: address.substring(0,9)=="wall-Ebot" ? 'bold' : 'none'}}>{address}</li>)
                     }
                 </ul>
             <Button />

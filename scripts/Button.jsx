@@ -4,7 +4,7 @@ import { Socket } from './Socket';
 function handleSubmit(event) {
     let newAddress = document.getElementById("address_input");
     Socket.emit('new address input', {
-        'address':newAddress.value,
+        'address':newAddress.value, 'room': "wall-Echat"
     })
     
     console.log('Sent the address ' + newAddress.value + ' to server!');

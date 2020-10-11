@@ -10,6 +10,7 @@ import psycopg2
 import requests
 import json
 from datetime import datetime
+from flask_socketio import join_room, leave_room
 
 ADDRESSES_RECEIVED_CHANNEL = 'addresses received'
 
@@ -48,7 +49,7 @@ def emit_all_addresses(channel):
     all_addresses=[db_address.address for db_address in db.session.query(models.Usps).all()]
     
     socketio.emit(channel, {
-        'allAddresses':all_addresses
+        'allAddresses':all_addresses, 'User':dbuser
     })
 
 @socketio.on('connect')
@@ -71,8 +72,10 @@ def on_new_address(data):
     dbuser = os.environ['SQL_USER']
     message=dbuser+": "+data["address"]
     db.session.add(models.Usps(message));
-    print(data["address"])
     db.session.commit();
+    
+    room = data['room']
+    join_room(room)
     
     if(data["address"][0:2] == '!!'):
         dbuser="wall-Ebot"
