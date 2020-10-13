@@ -9,9 +9,14 @@ import { Socket } from './Socket';
 export function Content() {
     const [addresses, setAddresses] = React.useState([]);
     const [users, setUser] = React.useState([]);
-    var clients;
+    // var messageBody = document.querySelector('#messageBody');
+    // messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+    
+    
     
     function getNewAddresses() {
+        
+        
         
         React.useEffect(() => 
         {
@@ -19,7 +24,9 @@ export function Content() {
                 
                 console.log("Received addresses from server: " + data['allAddresses']);
                 setAddresses(data['allAddresses']);
-                setUser("1");
+                setUser(data['numUsers']);
+                
+                console.log("numusers: " + data['numUsers']);
                 
                 
             })
@@ -27,13 +34,18 @@ export function Content() {
     }
     
     getNewAddresses();
+    
 
     return (
         <div>
-            <h1 style={{fontFamily:"verdana", backgroundColor: "lightblue", textAlign: "center"}}>WALL-E Chat Room! (1 member online)</h1>
+            <h1 style={{fontFamily:"verdana", backgroundColor: "lightblue", textAlign: "center"}}>WALL-E Chat Room! ({ users } member online)</h1>
+                <div class='panel-Body scroll' id='messageBody' style={{ overflow:"auto"}}></div>
+         
                 <ul>
                     {
-                    addresses.map((address, index) => <li style= {{fontWeight: address.substring(0,9)=="wall-Ebot" ? 'bold' : 'none'}}>{address}</li>)
+                    addresses.map((address, index) => <li style= {{fontWeight: address.substring(0,9)=="wall-Ebot" ? 'bold' : 'none'}}>
+                    <img id="imageish"/>
+                    {address}</li>)
                     }
                 </ul>
             <Button />

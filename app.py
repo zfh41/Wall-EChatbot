@@ -11,6 +11,7 @@ import requests
 import json
 from datetime import datetime
 from flask_socketio import join_room, leave_room
+import random
 
 ADDRESSES_RECEIVED_CHANNEL = 'addresses received'
 
@@ -30,9 +31,15 @@ sql_user = os.environ[SQL_USER]
 sql_pwd = os.environ[SQL_PASSWORD]
 dbuser = os.environ[SQL_USER]
 
+global num_users
+global new_user
+num_users = 0
 
-database_uri = 'postgresql://{}:{}@localhost/postgres'.format(
-    sql_user, sql_pwd)
+
+
+
+database_uri = 'postgresql://{}:{}@localhost/postgres'.format(sql_user, sql_pwd)
+
 
 app.config['SQLALCHEMY_DATABASE_URI'] = database_uri
 
@@ -42,22 +49,28 @@ db.app = app
 
 
 db.create_all()
-db.session.commit()
+db.session.commit() 
 
 
 def emit_all_addresses(channel):
     all_addresses=[db_address.address for db_address in db.session.query(models.Usps).all()]
     
+    print("num_users: " + str(num_users))
+    
     socketio.emit(channel, {
-        'allAddresses':all_addresses, 'User':dbuser
+        'allAddresses':all_addresses, 'User':dbuser, 'numUsers': num_users-1
     })
 
 @socketio.on('connect')
 def on_connect():
+    name_list = ["tactfulibexe", "leafycomparison", "singeattack", "grandoink", "informmourning", "depthsoup", "emeraldrubeus", "turgidzonked"]
+    global new_user
+    new_user=random.choice(name_list)
+    global num_users
+    
+    num_users+=1
+    
     print('Someone connected!')
-    socketio.emit('connected', {
-        'test': 'Connected'
-    })
     
     emit_all_addresses(ADDRESSES_RECEIVED_CHANNEL)
     
@@ -65,6 +78,8 @@ def on_connect():
 @socketio.on('disconnect')
 def on_disconnect():
     print ('Someone disconnected!')
+    global num_users
+    num_users-=1
 
 @socketio.on('new address input')
 def on_new_address(data):
