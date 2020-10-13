@@ -53,7 +53,7 @@ If that doesn't work: `sudo vim $(psql -c "show hba_file;" | grep pg_hba.conf)`
   c) Preview Running Application (might have to clear your cache by doing a hard refresh)    
 
 
-## Make sure to use `sudo service postgresql restart` to restart your database
+## Use the command `sudo service postgresql restart` to restart your database
 
 ### If you want to clear your chat of all message history:
 1. Type in command `psql`

@@ -38,7 +38,7 @@ num_users = 0
 
 
 
-database_uri = 'postgresql://{}:{}@localhost/postgres'.format(sql_user, sql_pwd)
+database_uri = os.environ['DATABASE_URL']
 
 
 app.config['SQLALCHEMY_DATABASE_URI'] = database_uri
