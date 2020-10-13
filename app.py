@@ -37,7 +37,6 @@ num_users = 0
 
 
 
-
 database_uri = os.environ['DATABASE_URL']
 
 
@@ -72,6 +71,9 @@ def on_connect():
     
     print('Someone connected!')
     
+    socketio.emit('connected', {
+        'test':'Connected'
+    })
     emit_all_addresses(ADDRESSES_RECEIVED_CHANNEL)
     
 

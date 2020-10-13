@@ -71,6 +71,7 @@ in a blank rendered page. I tried the next few and it resulted with no change in
 Since I needed the bot to respond and its user to display when provoked, I needed to figure another way to display the user in the list mode. I found JSX render to be intuitively more difficult to format than HTML and found myself wasting time trying to display the user variable next to address variable in a different list. By then,
 I decided to use a different logic and decided to pass in the conditionals for dbuser in my python file itself. I changed dbuser whenever the message that was being sent started with '!!' to bot. For simiplicity sake, I decided to concantenate the user string with the message string to make things easier. I am not sure if that is a good coding habit, but it worked perfectly for this project. This made things more easier to render on the JSX rather than creating a whole bunch of list structures and passing it in to JSX.
 
+
 # Unresolved Issues:
 
 As mentioned before, I was having issues understanding how to change the number of members in the room. I was confused on how to implement the chat room features that socketio had. If I had more time I would have implemented it better and have done the stretch features for it.  
