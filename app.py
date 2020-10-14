@@ -57,7 +57,7 @@ def emit_all_addresses(channel):
     print("num_users: " + str(num_users))
     
     socketio.emit(channel, {
-        'allAddresses':all_addresses, 'User':dbuser, 'numUsers': num_users-1
+        'allAddresses':all_addresses, 'User':dbuser, 'numUsers': num_users
     })
 
 @socketio.on('connect')
@@ -82,6 +82,10 @@ def on_disconnect():
     print ('Someone disconnected!')
     global num_users
     num_users-=1
+    socketio.emit('disconnected', {
+        'test': 'Disconnected'
+    })
+    emit_all_addresses(ADDRESSES_RECEIVED_CHANNEL)
 
 @socketio.on('new address input')
 def on_new_address(data):
