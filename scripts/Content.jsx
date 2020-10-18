@@ -12,6 +12,8 @@ export function Content() {
     // var messageBody = document.querySelector('#messageBody');
     // messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
     
+    const [imageURL, setURL]=React.useState([])
+    
     
     
     function getNewAddresses() {
@@ -27,7 +29,16 @@ export function Content() {
                 setUser(data['numUsers']);
                 
                 console.log("numusers: " + data['numUsers']);
-                
+                console.log("URL: " + data['imageURL']);
+                setURL(data['imageURL']);
+                console.log("imageURL: " + imageURL);
+                // <img src = {address.substring(0,9)=="wall-Ebot" ? '' : {{imageURL}} } />
+                // {% if address.substring(0,9) == "wall-Ebot" %}
+                //     <img src = "">
+                //     {% else %}
+                //     <img src = {imageURL}>
+                //     {% endif %}
+             
                 
             })
         });
@@ -44,12 +55,13 @@ export function Content() {
                 <ul>
                     {
                     addresses.map((address, index) => <li style= {{fontWeight: address.substring(0,9)=="wall-Ebot" ? 'bold' : 'none'}}>
-                    <img id="imageish"/>
                     {address}</li>)
                     }
                 </ul>
             <Button />
+            
             <img class="center" src="https://cdn.dribbble.com/users/37530/screenshots/2937858/drib_blink_bot.gif"/>
+            <img src={imageURL}/>
         </div>
         
     );

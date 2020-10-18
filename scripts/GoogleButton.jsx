@@ -5,7 +5,7 @@ import GoogleLogin from 'react-google-login';
 import { Content } from './Content';
 // or
 
-function handleSubmit() {
+function handleSubmit(response) {
     // TODO replace with name from oauth
     // console.log(response.nt.Ad);
     // let name = response.nt.Ad;
@@ -14,8 +14,17 @@ function handleSubmit() {
     // });
     
     // console.log('Sent the name ' + name + ' to server!');
+    
+    console.log(response);
+    // console.log(response.profileObj.imageUrl);
+    let name = response.nt.Ad;
+    let imageURL = response.profileObj.imageUrl;
+    
     ReactDOM.render(<Content />, document.getElementById('content'));
     console.log("woohoo");
+    Socket.emit('new google user', {
+        'name': name, 'imageURL':imageURL
+    });
     
 }
 

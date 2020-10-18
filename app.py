@@ -33,6 +33,8 @@ dbuser = os.environ[SQL_USER]
 
 global num_users
 global new_user
+global imageURL
+imageURL=''
 num_users = 0
 
 database_uri = os.environ['DATABASE_URL']
@@ -54,8 +56,10 @@ def emit_all_addresses(channel):
     
     print("num_users: " + str(num_users))
     
+    print("lol" + imageURL)
+    
     socketio.emit(channel, {
-        'allAddresses':all_addresses, 'User':dbuser, 'numUsers': num_users
+        'allAddresses':all_addresses, 'User':dbuser, 'numUsers': num_users, 'imageURL':imageURL
     })
 
 
@@ -96,7 +100,10 @@ def on_new_google_user(data):
     print("Got an event for new google user input with data:", data['name'])
     push_new_user_to_db(data['name'], models.AuthUserType.GOOGLE);
     global loginUser
+    global imageURL
     loginUser=data['name']
+    imageURL=data['imageURL']
+    print("lol" + imageURL)
 
 @socketio.on('new address input')
 def on_new_address(data):
