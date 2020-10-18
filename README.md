@@ -7,6 +7,7 @@
   d) `npm install -g webpack`    
   e) `npm install --save-dev webpack`    
   f) `npm install socket.io-client --save`
+  g) `sudo pip install requests`
 :warning: :warning: :warning: If you see any error messages, make sure you use `sudo pip` or `sudo npm`. If it says "pip cannot be found", run `which pip` and use `sudo [path to pip from which pip] install` :warning: :warning: :warning:    
   
 # Getting PSQL to work with Python  
@@ -14,7 +15,14 @@
 1. Update yum: `sudo yum update`, and enter yes to all prompts    
 2. Upgrade pip: `sudo /usr/local/bin/pip install --upgrade pip`  
 3. Get psycopg2: `sudo /usr/local/bin/pip install psycopg2-binary`    
-4. Get SQLAlchemy: `sudo /usr/local/bin/pip install Flask-SQLAlchemy==2.1`    
+4. Get SQLAlchemy: `sudo /usr/local/bin/pip install Flask-SQLAlchemy==2.1`  
+
+# Set up DB  
+0. `sudo service postgresql start` and `cd ~/environment/lect12 && python`  
+1. In the python interactive shell, run:  
+	`import models`  
+	`models.db.create_all()`  
+	`models.db.session.commit()`  
   
 # Setting up PSQL  
   
@@ -53,12 +61,16 @@ If that doesn't work: `sudo vim $(psql -c "show hba_file;" | grep pg_hba.conf)`
   c) Preview Running Application (might have to clear your cache by doing a hard refresh)    
 
 
+
+
 ## Use the command `sudo service postgresql restart` to restart your database
 
 ### If you want to clear your chat of all message history:
 1. Type in command `psql`
 2. Type in `\c postgres`
 3. Type in `delete from <databasename> (in our case usps);`
+
+
 
 
 

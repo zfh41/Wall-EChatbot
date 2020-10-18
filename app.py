@@ -35,8 +35,6 @@ global num_users
 global new_user
 num_users = 0
 
-
-
 database_uri = os.environ['DATABASE_URL']
 
 
@@ -60,11 +58,17 @@ def emit_all_addresses(channel):
         'allAddresses':all_addresses, 'User':dbuser, 'numUsers': num_users
     })
 
+
+def push_new_user_to_db(name, auth_type):
+    # TODO remove this check after the logic works correctly
+    if name != "John Doe":
+        db.session.add(models.AuthUser(name, auth_type));
+        db.session.commit();
+        
+
 @socketio.on('connect')
 def on_connect():
-    name_list = ["tactfulibexe", "leafycomparison", "singeattack", "grandoink", "informmourning", "depthsoup", "emeraldrubeus", "turgidzonked"]
-    global new_user
-    new_user=random.choice(name_list)
+    
     global num_users
     
     num_users+=1
@@ -86,11 +90,18 @@ def on_disconnect():
         'test': 'Disconnected'
     })
     emit_all_addresses(ADDRESSES_RECEIVED_CHANNEL)
+    
+@socketio.on('new google user')
+def on_new_google_user(data):
+    print("Got an event for new google user input with data:", data['name'])
+    push_new_user_to_db(data['name'], models.AuthUserType.GOOGLE);
+    global loginUser
+    loginUser=data['name']
 
 @socketio.on('new address input')
 def on_new_address(data):
     print("Got an event for new address input with data:", data)
-    dbuser = os.environ['SQL_USER']
+    dbuser = loginUser
     message=dbuser+": "+data["address"]
     db.session.add(models.Usps(message));
     db.session.commit();
