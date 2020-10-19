@@ -12,6 +12,10 @@ import json
 from datetime import datetime
 from flask_socketio import join_room, leave_room
 import random
+import urllib.parse as parse
+from rfc3987 import parse
+
+
 
 ADDRESSES_RECEIVED_CHANNEL = 'addresses received'
 
@@ -36,6 +40,8 @@ global new_user
 global imageURL
 imageURL=''
 num_users = 0
+global isUrl
+isUrl=0
 
 database_uri = os.environ['DATABASE_URL']
 
@@ -59,7 +65,7 @@ def emit_all_addresses(channel):
     print("lol" + imageURL)
     
     socketio.emit(channel, {
-        'allAddresses':all_addresses, 'User':dbuser, 'numUsers': num_users, 'imageURL':imageURL
+        'allAddresses':all_addresses, 'User':dbuser, 'numUsers': num_users, 'imageURL':imageURL, 'isURL':isUrl
     })
 
 
@@ -113,8 +119,20 @@ def on_new_google_user(data):
 @socketio.on('new address input')
 def on_new_address(data):
     print("Got an event for new address input with data:", data)
+    global isUrl
+    isUrl=0
     dbuser = loginUser
     message=dbuser+": "+data["address"]
+    
+    
+    try:
+        parse(data["address"], rule='IRI')
+    except:
+        isUrl=1
+    
+        
+    
+        
     db.session.add(models.Usps(message));
     db.session.commit();
     
