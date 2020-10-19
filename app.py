@@ -104,6 +104,11 @@ def on_new_google_user(data):
     loginUser=data['name']
     imageURL=data['imageURL']
     print("lol" + imageURL)
+    socketio.emit('connected', {
+        'test':'Connected'
+    })
+    emit_all_addresses(ADDRESSES_RECEIVED_CHANNEL)
+    
 
 @socketio.on('new address input')
 def on_new_address(data):
