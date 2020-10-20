@@ -14,6 +14,10 @@ export function Content() {
     
     const [imageURL, setURL]=React.useState([]);
     
+    const[isURL, setisURL]=React.useState([]);
+    const[userLength, setUserLength]=React.useState([]);
+    const[mURL, setmURL]=React.useState([])
+    
     
     function getNewAddresses() {
         
@@ -43,6 +47,26 @@ export function Content() {
         });
     }
     
+    function Greeting(address) {
+        
+        React.useEffect(() => 
+        {
+            Socket.on('isURL', (data) => {
+                setisURL(data['isURL']);
+                setUserLength(data['userLength']);
+                setmURL(data['url']);
+                
+           
+            })
+        });
+            
+            
+        if (isURL==0) {
+            return <UserGreeting />;
+        }
+        return <GuestGreeting />;
+    }
+    
     getNewAddresses();
 
     return (
@@ -52,8 +76,9 @@ export function Content() {
                 <ul>
                     {
                     addresses.map((address, index) => <li style= {{fontWeight: address.substring(0,9)=="wall-Ebot" ? 'bold' : 'none'}}>
-                    <img src = { address.substring(0,9)=="wall-Ebot" ? "https://cdn.dribbble.com/users/37530/screenshots/2937858/drib_blink_bot.gif" : imageURL } width="30" height="30" />&nbsp;
-                    {address}</li>)
+                    <img src = { address.substring(0,9)=="wall-Ebot" ? "https://cdn.dribbble.com/users/37530/screenshots/2937858/drib_blink_bot.gif" : imageURL } width="30" height="30" />
+                    <p style = {{display: "inline"}} >{address}</p>
+                    </li>)
                     }
                 </ul>
             <Button />

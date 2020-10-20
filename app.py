@@ -38,6 +38,8 @@ dbuser = os.environ[SQL_USER]
 global num_users
 global new_user
 global imageURL
+global userLength
+userLength=0
 imageURL=''
 num_users = 0
 global isUrl
@@ -65,7 +67,7 @@ def emit_all_addresses(channel):
     print("lol" + imageURL)
     
     socketio.emit(channel, {
-        'allAddresses':all_addresses, 'User':dbuser, 'numUsers': num_users, 'imageURL':imageURL, 'isURL':isUrl
+        'allAddresses':all_addresses, 'User':dbuser, 'numUsers': num_users, 'imageURL':imageURL
     })
 
 
@@ -127,8 +129,18 @@ def on_new_address(data):
     
     try:
         parse(data["address"], rule='IRI')
+        global userLength
+        userLength = len(dbuser) + 2
+        
+        socketio.emit('isURL', {
+            'isURL':isUrl, 'userLength':userLength, 'url':data["address"], 'dbuser':dbuser+": "
+        })
+        
+    
     except:
         isUrl=1
+        
+    print("isUrl: " + str(isUrl))
     
         
     
