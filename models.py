@@ -8,11 +8,14 @@ class Usps(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     address = db.Column(db.String(400))
     url=db.Column(db.Integer)
+    guser=db.Column(db.String(400))
+    imgurl=db.Column(db.String(400))
     
-    def __init__(self, a, url):
+    def __init__(self, a, url, user, imgurl):
         self.address = a
         self.url=url
-        
+        self.user=user
+        self.imgurl=imgurl
     def __repr__(self):
         return '<Usps address: %s>' % self.address 
         

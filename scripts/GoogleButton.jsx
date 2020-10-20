@@ -15,8 +15,7 @@ function handleSubmit(response) {
     
     // console.log('Sent the name ' + name + ' to server!');
     
-    console.log(response);
-    console.log(response.profileObj.imageUrl);
+
     let name = response.profileObj.name;
     let imageURL = response.profileObj.imageUrl;
     

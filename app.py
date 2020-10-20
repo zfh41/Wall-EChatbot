@@ -64,12 +64,14 @@ db.session.commit()
 def emit_all_addresses(channel):
     all_addresses=[db_address.address for db_address in db.session.query(models.Usps).all()]
     checkUrl=[db_urls.url for db_urls in db.session.query(models.Usps).all()]
+    dbusers=[db_users.guser for db_users in db.session.query(models.Usps).all()]
+    imgUrls=[db_imgurls.imgurl for db_imgurls in db.session.query(models.Usps).all()]
     print("num_users: " + str(num_users))
     
     print("lol" + imageURL)
     
     socketio.emit(channel, {
-        'allAddresses':all_addresses, 'User':dbuser, 'numUsers': num_users, 'imageURL':imageURL, 'address':address, 'isUrl':isUrl,'checkUrl':checkUrl
+        'allAddresses':all_addresses, 'User':dbusers, 'numUsers': num_users, 'imageURL':imgUrls, 'address':address, 'isUrl':isUrl,'checkUrl':checkUrl
     })
 
 
@@ -127,7 +129,7 @@ def on_new_address(data):
     dbuser = loginUser
     global address;
     address=data["address"]
-    message=dbuser+": "+address
+    message=address
     
     
     try:
@@ -142,7 +144,7 @@ def on_new_address(data):
         
     
     print("isUrl: " + isUrl);
-    db.session.add(models.Usps(message, isUrl));
+    db.session.add(models.Usps(message, isUrl, dbuser, imageURL));
     db.session.commit();
     
     # room = data['room']
@@ -171,7 +173,7 @@ def on_new_address(data):
         else:
             message=dbuser+": "+"Sorry I do not recognize this command..."
 
-        db.session.add(models.Usps(message, isUrl));
+        db.session.add(models.Usps(message, isUrl, dbuser, imageURL));
         db.session.commit();
     
     emit_all_addresses(ADDRESSES_RECEIVED_CHANNEL)

@@ -32,8 +32,9 @@ export function Content() {
                 
 
                 setAddresses(data['allAddresses']);
+
                 setUser(data['numUsers']);
-                setdbUser(data['dbUser']);
+                setdbUser(data['User']);
                 
                 setURL(data['imageURL']);
                 
@@ -69,21 +70,28 @@ export function Content() {
             if( res==".png" || res==".jpg" || res==".gif" )
             {
                 
-                return ( <div style={{display: "inline-block"}}> <p>{dbUser}</p><a href={urls[index-1]}>{props.address}   </a>
+                return ( <div style={{display: "inline-block"}}>
+                <img src = { props.address.substring(0,9)=="wall-Ebot" ? "https://cdn.dribbble.com/users/37530/screenshots/2937858/drib_blink_bot.gif" : imageURL[index-1] } width="30" height="30" />
+                <p>{dbUser[index-1]}: </p><a href={urls[index-1]}>{props.address}   </a>
                 <img src={urls[index-1]} width="100" height="100"/>
                 </div> )
 
             }
             else{
            
-            return ( <div style={{display: "inline-block"}}> <p>{dbUser}</p><a href={urls[index-1]}>{props.address}</a> </div> )
+            return ( <div style={{display: "inline-block"}}>
+            <img src = { props.address.substring(0,9)=="wall-Ebot" ? "https://cdn.dribbble.com/users/37530/screenshots/2937858/drib_blink_bot.gif" : imageURL[index-1] } width="30" height="30" />
+            <p>{dbUser[index-1]}: </p><a href={urls[index-1]}>{props.address}</a> </div> )
             }
             
         }
         else{
             
             index++;
-            return(<p style = {{display: "inline"}} >{props.address}</p>)
+            return( <div>
+            <img src = { props.address.substring(0,9)=="wall-Ebot" ? "https://cdn.dribbble.com/users/37530/screenshots/2937858/drib_blink_bot.gif" : imageURL[index-1] } width="30" height="30" />
+                <p style = {{display: "inline"}} >{props.address}</p>
+                </div> )
         }
         
         
@@ -111,7 +119,6 @@ export function Content() {
                 <ul>
                     {
                     addresses.map((address, index) => <li style= {{fontWeight: address.substring(0,9)=="wall-Ebot" ? 'bold' : 'none'}}>
-                    <img src = { address.substring(0,9)=="wall-Ebot" ? "https://cdn.dribbble.com/users/37530/screenshots/2937858/drib_blink_bot.gif" : imageURL } width="30" height="30" />
                     <PutMessage address={address}/>
                     </li>)
                     }
