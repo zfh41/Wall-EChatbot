@@ -14,10 +14,10 @@ export function Content() {
     
     const [imageURL, setURL]=React.useState([]);
     
-    const[isURL, setisURL]=React.useState(1);
-    const[userLength, setUserLength]=React.useState([]);
     const[mURL, setmURL]=React.useState([])
     const[dbUser, setdbUser]=React.useState([])
+    
+    const[isURL, setisURL]=React.useState([])
     
     function getNewAddresses() {
         
@@ -30,8 +30,13 @@ export function Content() {
 
                 setAddresses(data['allAddresses']);
                 setUser(data['numUsers']);
+                setdbUser(data['dbUser']);
                 
                 setURL(data['imageURL']);
+                
+                setisURL(data['isUrl']);
+                
+                setmURL(data['address']);
               
                 // <img src = {address.substring(0,9)=="wall-Ebot" ? '' : {{imageURL}} } />
                 // {% if address.substring(0,9) == "wall-Ebot" %}
@@ -45,41 +50,23 @@ export function Content() {
         });
     }
     
-    function Greeting() {
-        
-        React.useEffect(() => 
-        {
-            Socket.on('isURL', (data) => {
-                setisURL(data['isURL']);
-                setUserLength(data['userLength']);
-                setmURL(data['url']);
-                setdbUser(data['dbuser']);
-                console.log("spongebob");
-            
-            })
-        });
-            
-            
-        if (isURL==0) {
-            // console.log("whoa! this is a url");
-            
-            // return(
-            //     <div>
-            //         {dbUser}
-            //         <a href={mURL}> {mURL} </a>
-            //     </div>
-            //     )
+    function PutMessage(props)
+    {
+        if (isURL == 0){
+            return ( <div> <p>{dbUser}</p>
+                      <a href={mURL}>{props.address}</a> 
+                      </div> )
         }
         else{
-        //     return(
-        //     { address }
-        // )
+            return(<p style = {{display: "inline"}} >{props.address}</p>)
         }
         
+        
+        
     }
+
     
     getNewAddresses();
-    Greeting();
 
     return (
         <div>
@@ -89,7 +76,7 @@ export function Content() {
                     {
                     addresses.map((address, index) => <li style= {{fontWeight: address.substring(0,9)=="wall-Ebot" ? 'bold' : 'none'}}>
                     <img src = { address.substring(0,9)=="wall-Ebot" ? "https://cdn.dribbble.com/users/37530/screenshots/2937858/drib_blink_bot.gif" : imageURL } width="30" height="30" />
-                    <p style = {{display: "inline"}} >{address}</p>
+                    <PutMessage address={address}/>
                     </li>)
                     }
                 </ul>

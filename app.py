@@ -39,11 +39,13 @@ global num_users
 global new_user
 global imageURL
 global userLength
+global address
+address=''
 userLength=0
 imageURL=''
 num_users = 0
 global isUrl
-isUrl=2
+isUrl=1
 
 database_uri = os.environ['DATABASE_URL']
 
@@ -67,7 +69,7 @@ def emit_all_addresses(channel):
     print("lol" + imageURL)
     
     socketio.emit(channel, {
-        'allAddresses':all_addresses, 'User':dbuser, 'numUsers': num_users, 'imageURL':imageURL
+        'allAddresses':all_addresses, 'User':dbuser, 'numUsers': num_users, 'imageURL':imageURL, 'address':address, 'isUrl':isUrl
     })
 
 
@@ -123,29 +125,22 @@ def on_new_address(data):
     print("Got an event for new address input with data:", data)
     global isUrl
     dbuser = loginUser
-    message=dbuser+": "+data["address"]
+    global address;
+    address=data["address"]
+    message=dbuser+": "+address
     
     
     try:
         parse(data["address"], rule='IRI')
-        print("whoa! is in URL")
-        global userLength
-        userLength = len(dbuser) + 2
-        
-        socketio.emit('isURL', {
-            'userLength':userLength, 'url':data["address"], 'dbuser':dbuser+": ", 'isURL':isUrl
-        })
-        
-    
+        isUrl=0
     except:
+        print("whoa")
         isUrl=1
-        
-    print("isUrl: " + str(isUrl))
     
         
     
         
-    db.session.add(models.Usps(message));
+    db.session.add(models.Usps(address, isUrl));
     db.session.commit();
     
     room = data['room']
@@ -174,7 +169,7 @@ def on_new_address(data):
         else:
             message=dbuser+": "+"Sorry I do not recognize this command..."
 
-        db.session.add(models.Usps(message));
+        db.session.add(models.Usps(message, isUrl));
         db.session.commit();
     
     emit_all_addresses(ADDRESSES_RECEIVED_CHANNEL)
