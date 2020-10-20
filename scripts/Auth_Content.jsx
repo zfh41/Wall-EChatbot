@@ -25,8 +25,11 @@ export function Auth_Content() {
     
     return (
         <div>
-            <h1>Log in with OAuth!</h1>
-            <GoogleButton />
+            <h1 style={{fontFamily:"verdana"}}>Join Wall-E Chatroom!</h1>
+            <GoogleButton /> <br/> <br/>
+            
+            <img src = "https://66.media.tumblr.com/420ad6eedfdbac0d8d047743a6462b85/tumblr_o1489hnyJJ1rey868o1_500.gif"/>
+            
         </div>
         
     );

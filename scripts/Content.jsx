@@ -69,14 +69,14 @@ export function Content() {
             if( res==".png" || res==".jpg" || res==".gif" )
             {
                 
-                return ( <div> <p>{dbUser}</p><a href={urls[index-1]}>{props.address}</a> 
-                <img src={urls[index-1]}/>
+                return ( <div style={{display: "inline-block"}}> <p>{dbUser}</p><a href={urls[index-1]}>{props.address}   </a>
+                <img src={urls[index-1]} width="100" height="100"/>
                 </div> )
 
             }
             else{
            
-            return ( <div> <p>{dbUser}</p><a href={urls[index-1]}>{props.address}</a> </div> )
+            return ( <div style={{display: "inline-block"}}> <p>{dbUser}</p><a href={urls[index-1]}>{props.address}</a> </div> )
             }
             
         }
@@ -92,11 +92,22 @@ export function Content() {
 
     
     getNewAddresses();
+    
+    var chatarea = {
+        backgroundColor: "lightblue",
+        minWidth: "150px",
+        outlineStyle: "solid",
+        outlineWidth: "3px",
+        height: "770px",
+        width: "970px",
+        overflow:"auto",
+        display:"flex",
+    };
 
     return (
         <div>
             <h1 style={{fontFamily:"verdana", backgroundColor: "lightblue", textAlign: "center"}}>WALL-E Chat Room! ({ users } member online)</h1>
-                <div class='panel-Body scroll' id='messageBody' style={{ overflow:"auto"}}></div>
+            <div style={chatarea}>
                 <ul>
                     {
                     addresses.map((address, index) => <li style= {{fontWeight: address.substring(0,9)=="wall-Ebot" ? 'bold' : 'none'}}>
@@ -105,6 +116,7 @@ export function Content() {
                     </li>)
                     }
                 </ul>
+            </div>
             <Button />
             
             <img class="center" src="https://cdn.dribbble.com/users/37530/screenshots/2937858/drib_blink_bot.gif"/>
