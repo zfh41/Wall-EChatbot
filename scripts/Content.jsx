@@ -63,21 +63,25 @@ export function Content() {
         console.log(res);
         
         
-        if (urls[index] == 0){
+        if (urls[index] != "1"){
+            
             index++;
             if( res==".png" || res==".jpg" || res==".gif" )
             {
-                return ( <div> <p>{dbUser}</p><a href={mURL}>{props.address}</a> 
-                <img src={mURL}/>
+                
+                return ( <div> <p>{dbUser}</p><a href={urls[index-1]}>{props.address}</a> 
+                <img src={urls[index-1]}/>
                 </div> )
 
             }
             else{
-            return ( <div> <p>{dbUser}</p><a href={mURL}>{props.address}</a> </div> )
+           
+            return ( <div> <p>{dbUser}</p><a href={urls[index-1]}>{props.address}</a> </div> )
             }
             
         }
         else{
+            
             index++;
             return(<p style = {{display: "inline"}} >{props.address}</p>)
         }

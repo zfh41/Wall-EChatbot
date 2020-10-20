@@ -132,14 +132,16 @@ def on_new_address(data):
     
     try:
         parse(data["address"], rule='IRI')
-        isUrl=0
+        isUrl=address
+        # if (isUrl[-4:] ==".png" or isUrl[-4:]==".jpg" or isUrl[-4:]==".gif"):
+            
     except:
         print("whoa")
-        isUrl=1
+        isUrl="1"
     
         
     
-    print("isUrl: " + str(isUrl));
+    print("isUrl: " + isUrl);
     db.session.add(models.Usps(message, isUrl));
     db.session.commit();
     
