@@ -63,13 +63,13 @@ db.session.commit()
 
 def emit_all_addresses(channel):
     all_addresses=[db_address.address for db_address in db.session.query(models.Usps).all()]
-    
+    checkUrl=[db_urls.url for db_urls in db.session.query(models.Usps).all()]
     print("num_users: " + str(num_users))
     
     print("lol" + imageURL)
     
     socketio.emit(channel, {
-        'allAddresses':all_addresses, 'User':dbuser, 'numUsers': num_users, 'imageURL':imageURL, 'address':address, 'isUrl':isUrl
+        'allAddresses':all_addresses, 'User':dbuser, 'numUsers': num_users, 'imageURL':imageURL, 'address':address, 'isUrl':isUrl,'checkUrl':checkUrl
     })
 
 
@@ -139,12 +139,12 @@ def on_new_address(data):
     
         
     
-        
-    db.session.add(models.Usps(address, isUrl));
+    print("isUrl: " + str(isUrl));
+    db.session.add(models.Usps(message, isUrl));
     db.session.commit();
     
-    room = data['room']
-    join_room(room)
+    # room = data['room']
+    # join_room(room)
     
     if(data["address"][0:2] == '!!'):
         dbuser="wall-Ebot"

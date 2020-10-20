@@ -7,6 +7,7 @@ from enum import Enum
 class Usps(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     address = db.Column(db.String(400))
+    url=db.Column(db.Integer)
     
     def __init__(self, a, url):
         self.address = a

@@ -8,6 +8,9 @@ import { Socket } from './Socket';
 
 export function Content() {
     const [addresses, setAddresses] = React.useState([]);
+    const [urls, seturls] = React.useState([]);
+    var index = 0;
+    var mString = '';
     const [users, setUser] = React.useState([]);
     // var messageBody = document.querySelector('#messageBody');
     // messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
@@ -37,6 +40,8 @@ export function Content() {
                 setisURL(data['isUrl']);
                 
                 setmURL(data['address']);
+                
+                seturls(data['checkUrl']);
               
                 // <img src = {address.substring(0,9)=="wall-Ebot" ? '' : {{imageURL}} } />
                 // {% if address.substring(0,9) == "wall-Ebot" %}
@@ -52,12 +57,28 @@ export function Content() {
     
     function PutMessage(props)
     {
-        if (isURL == 0){
-            return ( <div> <p>{dbUser}</p>
-                      <a href={mURL}>{props.address}</a> 
-                      </div> )
+        console.log("values: " + index + urls[index]);
+        
+        var res = props.address.substr(props.address.length-4);
+        console.log(res);
+        
+        
+        if (urls[index] == 0){
+            index++;
+            if( res==".png" || res==".jpg" || res==".gif" )
+            {
+                return ( <div> <p>{dbUser}</p><a href={mURL}>{props.address}</a> 
+                <img src={mURL}/>
+                </div> )
+
+            }
+            else{
+            return ( <div> <p>{dbUser}</p><a href={mURL}>{props.address}</a> </div> )
+            }
+            
         }
         else{
+            index++;
             return(<p style = {{display: "inline"}} >{props.address}</p>)
         }
         
