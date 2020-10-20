@@ -14,10 +14,10 @@ export function Content() {
     
     const [imageURL, setURL]=React.useState([]);
     
-    const[isURL, setisURL]=React.useState([]);
+    const[isURL, setisURL]=React.useState(1);
     const[userLength, setUserLength]=React.useState([]);
     const[mURL, setmURL]=React.useState([])
-    
+    const[dbUser, setdbUser]=React.useState([])
     
     function getNewAddresses() {
         
@@ -27,14 +27,12 @@ export function Content() {
         {
             Socket.on('addresses received', (data) => {
                 
-                console.log("Received addresses from server: " + data['allAddresses']);
+
                 setAddresses(data['allAddresses']);
                 setUser(data['numUsers']);
                 
-                console.log("numusers: " + data['numUsers']);
-                console.log("URL: " + data['imageURL']);
                 setURL(data['imageURL']);
-                console.log("imageURL: " + imageURL);
+              
                 // <img src = {address.substring(0,9)=="wall-Ebot" ? '' : {{imageURL}} } />
                 // {% if address.substring(0,9) == "wall-Ebot" %}
                 //     <img src = "">
@@ -47,7 +45,7 @@ export function Content() {
         });
     }
     
-    function Greeting(address) {
+    function Greeting() {
         
         React.useEffect(() => 
         {
@@ -55,19 +53,33 @@ export function Content() {
                 setisURL(data['isURL']);
                 setUserLength(data['userLength']);
                 setmURL(data['url']);
-                
-           
+                setdbUser(data['dbuser']);
+                console.log("spongebob");
+            
             })
         });
             
             
         if (isURL==0) {
-            return <UserGreeting />;
+            // console.log("whoa! this is a url");
+            
+            // return(
+            //     <div>
+            //         {dbUser}
+            //         <a href={mURL}> {mURL} </a>
+            //     </div>
+            //     )
         }
-        return <GuestGreeting />;
+        else{
+        //     return(
+        //     { address }
+        // )
+        }
+        
     }
     
     getNewAddresses();
+    Greeting();
 
     return (
         <div>

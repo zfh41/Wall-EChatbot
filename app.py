@@ -43,7 +43,7 @@ userLength=0
 imageURL=''
 num_users = 0
 global isUrl
-isUrl=0
+isUrl=2
 
 database_uri = os.environ['DATABASE_URL']
 
@@ -122,18 +122,18 @@ def on_new_google_user(data):
 def on_new_address(data):
     print("Got an event for new address input with data:", data)
     global isUrl
-    isUrl=0
     dbuser = loginUser
     message=dbuser+": "+data["address"]
     
     
     try:
         parse(data["address"], rule='IRI')
+        print("whoa! is in URL")
         global userLength
         userLength = len(dbuser) + 2
         
         socketio.emit('isURL', {
-            'isURL':isUrl, 'userLength':userLength, 'url':data["address"], 'dbuser':dbuser+": "
+            'userLength':userLength, 'url':data["address"], 'dbuser':dbuser+": ", 'isURL':isUrl
         })
         
     
