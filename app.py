@@ -35,6 +35,8 @@ sql_user = os.environ[SQL_USER]
 sql_pwd = os.environ[SQL_PASSWORD]
 dbuser = os.environ[SQL_USER]
 
+global loginUser
+loginUser=''
 global num_users
 global new_user
 global imageURL
@@ -114,6 +116,7 @@ def on_new_google_user(data):
     global loginUser
     global imageURL
     loginUser=data['name']
+    print("loginuser: " + loginUser)
     imageURL=data['imageURL']
     print("lol" + imageURL)
     socketio.emit('connected', {
@@ -125,8 +128,10 @@ def on_new_google_user(data):
 @socketio.on('new address input')
 def on_new_address(data):
     print("Got an event for new address input with data:", data)
+    global dbuser
     global isUrl
     dbuser = loginUser
+    print(dbuser)
     global address;
     address=data["address"]
     message=address

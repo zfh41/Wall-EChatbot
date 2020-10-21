@@ -19,11 +19,13 @@ function handleSubmit(response) {
     let name = response.profileObj.name;
     let imageURL = response.profileObj.imageUrl;
     
-    ReactDOM.render(<Content />, document.getElementById('content'));
-    console.log("woohoo");
+    
     Socket.emit('new google user', {
         'name': name, 'imageURL':imageURL
     });
+    
+    ReactDOM.render(<Content />, document.getElementById('content'));
+    console.log("woohoo");
     
 }
 

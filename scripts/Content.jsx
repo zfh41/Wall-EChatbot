@@ -58,7 +58,7 @@ export function Content() {
     
     function PutMessage(props)
     {
-        console.log("values: " + index + urls[index]);
+        console.log("dbUser: " + index + dbUser[index]);
         
         var res = props.address.substr(props.address.length-4);
         console.log(res);
@@ -72,7 +72,7 @@ export function Content() {
                 
                 return ( <div style={{display: "inline-block"}}>
                 <img src = { props.address.substring(0,9)=="wall-Ebot" ? "https://cdn.dribbble.com/users/37530/screenshots/2937858/drib_blink_bot.gif" : imageURL[index-1] } width="30" height="30" />
-                <p>{dbUser[index-1]}: </p><a href={urls[index-1]}>{props.address}   </a>
+                <p style = {{display: "inline"}} >{dbUser[index-1]}: </p><a href={urls[index-1]}>{props.address}   </a>
                 <img src={urls[index-1]} width="100" height="100"/>
                 </div> )
 
@@ -81,7 +81,7 @@ export function Content() {
            
             return ( <div style={{display: "inline-block"}}>
             <img src = { props.address.substring(0,9)=="wall-Ebot" ? "https://cdn.dribbble.com/users/37530/screenshots/2937858/drib_blink_bot.gif" : imageURL[index-1] } width="30" height="30" />
-            <p>{dbUser[index-1]}: </p><a href={urls[index-1]}>{props.address}</a> </div> )
+            <p style = {{display: "inline"}} >{dbUser[index-1]}: </p><a href={urls[index-1]}>{props.address}</a> </div> )
             }
             
         }
@@ -89,8 +89,8 @@ export function Content() {
             
             index++;
             return( <div>
-            <img src = { props.address.substring(0,9)=="wall-Ebot" ? "https://cdn.dribbble.com/users/37530/screenshots/2937858/drib_blink_bot.gif" : imageURL[index-1] } width="30" height="30" />
-                <p style = {{display: "inline"}} >{props.address}</p>
+                <img src = { props.address.substring(0,9)=="wall-Ebot" ? "https://cdn.dribbble.com/users/37530/screenshots/2937858/drib_blink_bot.gif" : imageURL[index-1] } width="30" height="30" />
+                <p style = {{display: "inline"}} >{dbUser[index-1]}: {props.address}</p>
                 </div> )
         }
         
@@ -110,6 +110,7 @@ export function Content() {
         width: "970px",
         overflow:"auto",
         display:"flex",
+        flexDirection: "column-reverse",
     };
 
     return (
