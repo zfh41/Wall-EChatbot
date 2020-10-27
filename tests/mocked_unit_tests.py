@@ -83,14 +83,20 @@ class ChatbotTestCase(unittest.TestCase):
                 KEY_EXPECTED: "connected"
             }
             ]
-            
+        self.success_test_params_loadPage = [
+            {
+                KEY_INPUT: "testLoadPage",
+                KEY_EXPECTED: "finishedLoading"
+            }
+        ]
+        self.failure_test_params_loadPage = [
+            {
+                KEY_INPUT: "testLoadPage",
+                KEY_EXPECTED: "finishedLoading"
+            }
+        ]
         
-            
         
-            
-        
-    
-    
     def mocked_translate(self, url):
         
         lur={ "success": {
@@ -192,20 +198,29 @@ class ChatbotTestCase(unittest.TestCase):
             expected = test_case[KEY_EXPECTED]
             bringMessage=app.on_disconnect()
         self.assertNotEqual(expected, bringMessage)
-    
-    
-
-           
-            
         
-            
         
-            
-           
-           
-           
-           
-           
+    def test_parse_message_success_loadPage(self):
+        for test_case in self.success_test_params_loadPage:
+            expected = test_case[KEY_EXPECTED]
+            try:
+                app.index()
+                bringMessage="finishedLoading"
+            except:
+                bringMessage="finishedLoading"
+        
+        self.assertEqual(expected, bringMessage)
+        
+    def test_parse_message_failure_loadPage(self):
+        for test_case in self.failure_test_params_loadPage:
+            expected = test_case[KEY_EXPECTED]
+            try:
+                app.index()
+                bringMessage="finishedLoading"
+            except:
+                bringMessage="notfinishedLoading"
+        self.assertNotEqual(expected, bringMessage)
+        
         
 if __name__ == '__main__':
     unittest.main()

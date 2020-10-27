@@ -114,9 +114,6 @@ class ChatbotTestCase(unittest.TestCase):
             
             self.assertEqual(response, expected)
             
-
-            # Alternatively (and preferably), you can do self.assertDictEqual(response, expected)
-            
     def test_parse_message_failure_incorrect(self):
         for test in self.failure_test_params_incorrect:
             response = app.on_new_address(test)
@@ -142,6 +139,8 @@ class ChatbotTestCase(unittest.TestCase):
             expected = test[KEY_EXPECTED]
 
             self.assertNotEqual(response, expected)
+            
+    def test_
 
 
 if __name__ == '__main__':
