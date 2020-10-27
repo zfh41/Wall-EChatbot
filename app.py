@@ -134,6 +134,9 @@ def on_new_google_user(data):
     })
     emit_all_addresses(ADDRESSES_RECEIVED_CHANNEL)
     
+    return data['name']
+    
+    
 
 @socketio.on('new address input')
 def on_new_address(data):
@@ -175,8 +178,8 @@ def on_new_address(data):
             url='https://api.funtranslations.com/translate/yoda.json?text={}'.format(data["address"][15:])
             response = requests.get(url)
             json_body = response.json()
+            print(json_body)
             message=dbuser+": "+(json.dumps(json_body["contents"]["translated"])).strip('\"\\n')
-            print(json.dumps(json_body))
         elif(data["address"][2:] == "pun"):
            url='https://sv443.net/jokeapi/v2/joke/Pun?type=single'
            response = requests.get(url)
