@@ -54,6 +54,41 @@ class ChatbotTestCase(unittest.TestCase):
             }
         ]
         
+        self.failure_test_params = [
+            {
+                KEY_INPUT: "!!funtranslate Hi, I am Zaafira",
+                KEY_EXPECTED: "wall-Ebot: Hi, I am Zaafira"
+            }]
+            
+        self.failure_test_params_wrongConnect = [
+            {
+                KEY_INPUT: "connect",
+                KEY_EXPECTED: "disconnected"
+            }]
+            
+        self.success_test_params_connect = [
+            {
+                KEY_INPUT: "connect",
+                KEY_EXPECTED: "connected"
+            }]
+            
+        self.success_test_params_disconnect = [
+            {
+                KEY_INPUT: "disconnect",
+                KEY_EXPECTED: "disconnected"
+            }]
+        self.failure_test_params_disconnect = [
+            {
+                KEY_INPUT: "disconnect",
+                KEY_EXPECTED: "connected"
+            }
+            ]
+            
+        
+            
+        
+            
+        
     
     
     def mocked_translate(self, url):
@@ -117,8 +152,49 @@ class ChatbotTestCase(unittest.TestCase):
             self.assertEqual(expected, GUser)       
             
         
+    def test_parse_message_failure_translation(self):
+        for test_case in self.failure_test_params:
+            # with mock.patch('socket.socket'):
+                # c = ChatbotTestCase()
+                # c.tcp_socket.connect.assert_called_with('0.0.0.0', '6767')
+            expected = test_case[KEY_EXPECTED]
+            with mock.patch('requests.get', self.mocked_translate):
+                bringMessage = app.on_new_address(test_case)
         
-            
+        self.assertNotEqual(expected, bringMessage)
+        
+    def test_parse_message_failure_connect(self):
+        for test_case in self.failure_test_params_wrongConnect:
+            # with mock.patch('socket.socket'):
+                # c = ChatbotTestCase()
+                # c.tcp_socket.connect.assert_called_with('0.0.0.0', '6767')
+            expected = test_case[KEY_EXPECTED]
+            bringMessage=app.on_connect()
+        
+        self.assertNotEqual(expected, bringMessage)
+        
+    def test_parse_message_success_connect(self):
+        for test_case in self.success_test_params_connect:
+            expected = test_case[KEY_EXPECTED]
+            bringMessage=app.on_connect()
+        
+        self.assertEqual(expected, bringMessage)
+        
+    def test_parse_message_success_disconnect(self):
+        for test_case in self.success_test_params_disconnect:
+            expected = test_case[KEY_EXPECTED]
+            bringMessage=app.on_disconnect()
+        
+        self.assertEqual(expected, bringMessage)
+        
+    def test_parse_message_failure_disconnect(self):
+        for test_case in self.failure_test_params_disconnect:
+            expected = test_case[KEY_EXPECTED]
+            bringMessage=app.on_disconnect()
+        self.assertNotEqual(expected, bringMessage)
+    
+    
+
            
             
         

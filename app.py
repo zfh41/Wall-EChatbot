@@ -108,6 +108,7 @@ def on_connect():
     })
     emit_all_addresses(ADDRESSES_RECEIVED_CHANNEL)
     
+    return "connected"
 
 @socketio.on('disconnect')
 def on_disconnect():
@@ -118,6 +119,8 @@ def on_disconnect():
         'test': 'Disconnected'
     })
     emit_all_addresses(ADDRESSES_RECEIVED_CHANNEL)
+    
+    return "disconnected"
     
 @socketio.on('new google user')
 def on_new_google_user(data):
