@@ -36,12 +36,14 @@ class ChatbotTestCase(unittest.TestCase):
             {
                 KEY_INPUT: "!!funtranslate Hi, I am Zaafira",
                 KEY_EXPECTED: "wall-Ebot: Hi,Zaafira,  I am"
-            },
+            }]
+        self.success_test_pun = [
             {
                 KEY_INPUT: "!!pun",
                 KEY_EXPECTED: "wall-Ebot: How do you make holy water? You freeze it and drill holes in it."
                 
-            },
+            }]
+        self.success_test_googleLogin = [
             {
                 KEY_INPUT: {
                     NAME: "Zaafira Hasan",
@@ -90,28 +92,29 @@ class ChatbotTestCase(unittest.TestCase):
         return json_response_mock    
     
     def test_parse_message_success(self):
-        counter=0
         for test_case in self.success_test_params:
             # with mock.patch('socket.socket'):
                 # c = ChatbotTestCase()
                 # c.tcp_socket.connect.assert_called_with('0.0.0.0', '6767')
-            if (counter!=2):
-                expected = test_case[KEY_EXPECTED]
-                if (test_case[KEY_INPUT][2:14] == "funtranslate"):
-                    with mock.patch('requests.get', self.mocked_translate):
-                        bringMessage = app.on_new_address(test_case)
-                elif (test_case[KEY_INPUT][2:]=="pun"):
-                    with mock.patch('requests.get', self.mocked_pun):
-                        bringMessage=app.on_new_address(test_case)
+            expected = test_case[KEY_EXPECTED]
+            with mock.patch('requests.get', self.mocked_translate):
+                bringMessage = app.on_new_address(test_case)
+            
+            self.assertEqual(expected, bringMessage)
+    def test_parse_message_pun(self):
+        for test_case in self.success_test_pun:
+            expected = test_case[KEY_EXPECTED]
+            with mock.patch('requests.get', self.mocked_pun):
+                bringMessage=app.on_new_address(test_case)
                 
-                self.assertEqual(expected, bringMessage)
+            self.assertEqual(expected, bringMessage)
                         
             
-            
-            if (counter == 2):
-                expected = test_case[KEY_EXPECTED]
-                GUser = app.on_new_google_user(test_case[KEY_INPUT])
-                self.assertEqual(expected, GUser)       
+    def test_parse_message_googleLogin(self):
+        for test_case in self.success_test_googleLogin:
+            expected = test_case[KEY_EXPECTED]
+            GUser = app.on_new_google_user(test_case[KEY_INPUT])
+            self.assertEqual(expected, GUser)       
             
         
         
@@ -120,8 +123,7 @@ class ChatbotTestCase(unittest.TestCase):
             
         
             
-            
-            counter+=1
+        
             
            
            
