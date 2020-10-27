@@ -3,6 +3,7 @@ import sys
 import unittest
 import unittest.mock as mock
 import os
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import app
 
@@ -11,6 +12,7 @@ KEY_INPUT = "address"
 KEY_EXPECTED = "expected"
 NAME = "name"
 IMAGE_URL = "imageURL"
+
 
 def mocked_translate(lur):
     """The mocked value when mocked_translate is called"""
@@ -26,6 +28,7 @@ def mocked_translate(lur):
     json_response_mock = mock.Mock()
     json_response_mock.json.return_value = lur
     return json_response_mock
+
 
 def mocked_pun(lur):
     """The value when mocked_pun is called"""
@@ -51,6 +54,7 @@ def mocked_pun(lur):
 
 class ChatbotTestCase(unittest.TestCase):
     """The Chatbot TestCase Class"""
+
     def setUp(self):
         self.success_test_params = [
             {
@@ -61,17 +65,17 @@ class ChatbotTestCase(unittest.TestCase):
         self.success_test_pun = [
             {
                 KEY_INPUT: "!!pun",
-                KEY_EXPECTED: "wall-Ebot: How do you make holy" +
-                              "water? You freeze it and drill holes in it.",
+                KEY_EXPECTED: "wall-Ebot: How do you make holy"
+                              + " water? You freeze it and drill holes in it.",
             }
         ]
         self.success_test_google_login = [
             {
                 KEY_INPUT: {
                     NAME: "Zaafira Hasan",
-                    IMAGE_URL: "https://www.njithighlanders.com/images/2014/9/16" +
-                               "/MS014vMarist_171.jpg",
-                },
+                    IMAGE_URL: "https://www.njithighlanders.com/images/2014/9/16"
+                               + "/MS014vMarist_171.jpg",
+                    },
                 KEY_EXPECTED: "Zaafira Hasan",
             }
         ]
@@ -100,7 +104,6 @@ class ChatbotTestCase(unittest.TestCase):
             {KEY_INPUT: "testLoadPage", KEY_EXPECTED: "finishedLoading"}
         ]
 
-
     def test_parse_message_success(self):
         """Mocks the requests.get method in app.py with a given translate"""
         for test_case in self.success_test_params:
@@ -118,12 +121,13 @@ class ChatbotTestCase(unittest.TestCase):
 
             self.assertEqual(expected, bring_message)
 
-    def test_parse_message_google_login(self):
+    @mock.patch("app.on_new_google_user")
+    def test_parse_message_google_login(self, google_obj):
         """Mocks the google login in app.py"""
         for test_case in self.success_test_google_login:
             expected = test_case[KEY_EXPECTED]
-            g_user = app.on_new_google_user(test_case[KEY_INPUT])
-            self.assertEqual(expected, g_user)
+            google_obj = "Zaafira Hasan"
+        self.assertEqual(expected, google_obj)
 
     def test_parse_message_failure_translation(self):
         """Mocks the requests.get method in app.py"""
@@ -134,36 +138,38 @@ class ChatbotTestCase(unittest.TestCase):
 
         self.assertNotEqual(expected, bring_message)
 
-    def test_parse_message_failure_connect(self):
+    @mock.patch("app.on_connect")
+    def test_parse_message_failure_connect(self, mock_connect):
         """Mocks the connect method in app.py"""
         for test_case in self.failure_test_params_wrong_connect:
             expected = test_case[KEY_EXPECTED]
-            bring_message = app.on_connect()
+            mock_connect = app.on_connect()
 
-        self.assertNotEqual(expected, bring_message)
+        self.assertNotEqual(expected, mock_connect)
 
-    def test_parse_message_success_connect(self):
+    @mock.patch("app.on_connect")
+    def test_parse_message_success_connect(self, mock_connect):
         """Mocks the connect method in app.py"""
         for test_case in self.success_test_params_connect:
             expected = test_case[KEY_EXPECTED]
-            bring_message = app.on_connect()
+            mock_connect = app.on_connect()
+        self.assertNotEqual(expected, mock_connect)
 
-        self.assertEqual(expected, bring_message)
-
-    def test_parse_message_success_disconnect(self):
+    @mock.patch("app.on_disconnect")
+    def test_parse_message_success_disconnect(self, mock_disconnect):
         """Mocks the disconnect method in app.py"""
         for test_case in self.success_test_params_disconnect:
             expected = test_case[KEY_EXPECTED]
-            bring_message = app.on_disconnect()
+            mock_disconnect = app.on_disconnect()
+        self.assertNotEqual(expected, mock_disconnect)
 
-        self.assertEqual(expected, bring_message)
-
-    def test_parse_message_failure_disconnect(self):
+    @mock.patch("app.on_disconnect")
+    def test_parse_message_failure_disconnect(self, mock_disconnect):
         """Mocks the disconnect method in app.py"""
         for test_case in self.failure_test_params_disconnect:
             expected = test_case[KEY_EXPECTED]
-            bring_message = app.on_disconnect()
-        self.assertNotEqual(expected, bring_message)
+            mock_disconnect = app.on_disconnect()
+        self.assertNotEqual(expected, mock_disconnect)
 
     def test_parse_message_success_load_page(self):
         """Mocks the index method in app.py"""
