@@ -121,12 +121,11 @@ class ChatbotTestCase(unittest.TestCase):
 
             self.assertEqual(expected, bring_message)
 
-    @mock.patch("app.on_new_google_user")
-    def test_parse_message_google_login(self, google_obj):
+    def test_parse_message_google_login(self):
         """Mocks the google login in app.py"""
         for test_case in self.success_test_google_login:
             expected = test_case[KEY_EXPECTED]
-            google_obj = "Zaafira Hasan"
+            google_obj = app.on_new_google_user(test_case[KEY_INPUT])
         self.assertEqual(expected, google_obj)
 
     def test_parse_message_failure_translation(self):
@@ -138,8 +137,7 @@ class ChatbotTestCase(unittest.TestCase):
 
         self.assertNotEqual(expected, bring_message)
 
-    @mock.patch("app.on_connect")
-    def test_parse_message_failure_connect(self, mock_connect):
+    def test_parse_message_failure_connect(self):
         """Mocks the connect method in app.py"""
         for test_case in self.failure_test_params_wrong_connect:
             expected = test_case[KEY_EXPECTED]
@@ -155,13 +153,13 @@ class ChatbotTestCase(unittest.TestCase):
             mock_connect = app.on_connect()
         self.assertNotEqual(expected, mock_connect)
 
-    @mock.patch("app.on_disconnect")
-    def test_parse_message_success_disconnect(self, mock_disconnect):
+
+    def test_parse_message_success_disconnect(self):
         """Mocks the disconnect method in app.py"""
         for test_case in self.success_test_params_disconnect:
             expected = test_case[KEY_EXPECTED]
             mock_disconnect = app.on_disconnect()
-        self.assertNotEqual(expected, mock_disconnect)
+        self.assertEqual(expected, mock_disconnect)
 
     @mock.patch("app.on_disconnect")
     def test_parse_message_failure_disconnect(self, mock_disconnect):
