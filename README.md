@@ -1,3 +1,5 @@
+Heroku Link: https://wall-e-chatbot.herokuapp.com/
+
 # Set up React  
 0. `cd ~/environment && git clone https://github.com/NJIT-CS490/project2-m1-zfh4.git && cd project2-m1-zfh4`    
 1. Install your stuff!    
